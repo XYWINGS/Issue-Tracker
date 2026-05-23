@@ -1,0 +1,14 @@
+{
+  "name": "issue-tracker",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.2.2",
+  "scripts": {
+    "dev": "corepack pnpm --filter @issue-tracker/shared build && corepack pnpm -r --parallel --filter ./apps/* dev",
+    "build": "corepack pnpm -r --sort build",
+    "lint": "corepack pnpm -r lint",
+    "test": "corepack pnpm -r test",
+    "typecheck": "corepack pnpm -r typecheck",
+    "format": "corepack pnpm -r format"
+  }
+}

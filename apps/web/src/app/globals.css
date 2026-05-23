@@ -1,0 +1,19 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  max-width: 100vw;
+  min-height: 100vh;
+  margin: 0;
+}
+
+body {
+  background: #f7f8fb;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

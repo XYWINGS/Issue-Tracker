@@ -1,17 +1,36 @@
+# Dependencies
 node_modules/
-.pnpm-store/
-.tmp/
+frontend/node_modules/
+backend/node_modules/
 
-dist/
-build/
-.next/
-coverage/
+# Build outputs
+frontend/.next/
+frontend/out/
+backend/dist/
 
+# TypeScript
+*.tsbuildinfo
+
+# Environment files
 .env
 .env.*
 !.env.example
 
+# Logs
 *.log
-*.tsbuildinfo
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local caches
+.cache/
+.tmp/
+backend/.tmp/
+coverage/
+
+# OS/editor files
 .DS_Store
 Thumbs.db
+.vscode/
+.idea/

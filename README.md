@@ -2,21 +2,20 @@
 
 A full-stack issue tracker built for the CRUD assignment. The app includes email/password authentication, JWT cookies, issue management, search and filters, pagination, status counts, owner-only mutations, and CSV/JSON export.
 
+The frontend and backend are intentionally independent projects. Each folder has its own `package.json`, lockfile, dependencies, and local TypeScript types so it can be installed and deployed without relying on the repo root.
+
 ## Tech Stack
 
 - Frontend: Next.js, React, TypeScript, Material UI, MUI X DataGrid, Redux Toolkit, RTK Query
 - Backend: Express, TypeScript, MongoDB, Mongoose
 - Auth: bcrypt password hashing with HTTP-only JWT cookies
-- Workspace: pnpm monorepo
+- Package manager: pnpm
 
 ## Repository Layout
 
 ```text
-apps/
-  api/       Express API
-  web/       Next.js frontend
-packages/
-  shared/    Shared TypeScript issue/auth types and constants
+frontend/  Next.js web app for Vercel
+backend/   Express API for a Node host
 ```
 
 ## Prerequisites
@@ -27,27 +26,39 @@ packages/
 
 ## Local Setup
 
+Install dependencies separately:
+
 ```bash
-corepack enable
+cd frontend
+corepack pnpm install
+
+cd ../backend
 corepack pnpm install
 ```
 
 Create environment files:
 
 ```bash
-cp apps/api/.env.example apps/api/.env
-cp apps/web/.env.example apps/web/.env.local
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env.local
 ```
 
-Start local MongoDB with Docker:
+Start local MongoDB with Docker from the backend folder:
 
 ```bash
+cd backend
 docker compose up -d mongodb
 ```
 
-Run the apps:
+Run the apps in separate terminals:
 
 ```bash
+cd backend
+corepack pnpm dev
+```
+
+```bash
+cd frontend
 corepack pnpm dev
 ```
 
@@ -55,17 +66,18 @@ corepack pnpm dev
 - API: http://localhost:4000
 - Health check: http://localhost:4000/health
 
-For frontend-only work with hot reload:
+Use `dev` while editing code. The `start` scripts run production builds and do not hot-reload source changes.
+
+To stop the local MongoDB container:
 
 ```bash
-corepack pnpm dev:web
+cd backend
+docker compose down
 ```
-
-Use `dev` while editing code. The `start` scripts run production builds and do not hot-reload source changes; after using `start`, code edits only appear after rebuilding and restarting.
 
 ## Environment Variables
 
-Backend, in `apps/api/.env`:
+Backend, in `backend/.env`:
 
 ```text
 NODE_ENV=development
@@ -77,7 +89,7 @@ CLIENT_ORIGIN=http://localhost:3000
 COOKIE_SECURE=false
 ```
 
-Frontend, in `apps/web/.env.local`:
+Frontend, in `frontend/.env.local`:
 
 ```text
 NEXT_PUBLIC_API_URL=http://localhost:4000/api
@@ -87,21 +99,26 @@ For deployment, set `MONGODB_URI` to MongoDB Atlas, use a strong `JWT_SECRET`, s
 
 ## Scripts
 
+Frontend:
+
 ```bash
+cd frontend
 corepack pnpm dev
-corepack pnpm dev:web
-corepack pnpm dev:api
 corepack pnpm build
 corepack pnpm lint
 corepack pnpm typecheck
-corepack pnpm test
 ```
 
-Target a single workspace:
+Backend:
 
 ```bash
-corepack pnpm --filter @issue-tracker/api test
-corepack pnpm --filter @issue-tracker/web build
+cd backend
+docker compose up -d mongodb
+corepack pnpm dev
+corepack pnpm build
+corepack pnpm test
+corepack pnpm typecheck
+corepack pnpm start
 ```
 
 ## API Overview
@@ -123,8 +140,10 @@ All issue routes require authentication. All authenticated users can view all is
 
 ## Deployment Notes
 
-- Deploy `apps/web` to Vercel and set `NEXT_PUBLIC_API_URL` to the production API URL.
-- Deploy `apps/api` to Render, Railway, Fly.io, or a similar Node host.
+- Deploy the frontend to Vercel with root directory set to `frontend`.
+- Set `NEXT_PUBLIC_API_URL` in Vercel to the deployed backend API URL ending in `/api`.
+- Deploy the backend from `backend` to Render, Railway, Fly.io, or a similar Node host.
 - Use MongoDB Atlas for production data.
-- Configure CORS with `CLIENT_ORIGIN`.
+- Configure backend CORS with `CLIENT_ORIGIN`.
 - Use HTTPS and `COOKIE_SECURE=true` for production cookies.
+- `backend/docker-compose.yml` is for local MongoDB only; production should use Atlas or the database service provided by your backend host.

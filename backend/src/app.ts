@@ -1,7 +1,6 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
-import * as helmet from "helmet";
 import morgan from "morgan";
 import { allowedOrigins, env } from "./config/env.js";
 import { errorHandler, notFoundHandler } from "./middleware/error.js";
@@ -11,7 +10,6 @@ import { issuesRouter } from "./routes/issues.js";
 export function createApp() {
   const app = express();
 
-  app.use(helmet.default());
   app.use(
     cors({
       origin(origin, callback) {

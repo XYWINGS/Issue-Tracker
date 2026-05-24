@@ -4,7 +4,11 @@ import { Providers } from "@/components/Providers";
 
 export const metadata: Metadata = {
   title: "Issue Tracker",
-  description: "A full-stack issue tracker with CRUD, auth, filtering, and exports."
+  description:
+    "A full-stack issue tracker with CRUD, auth, filtering, and exports.",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

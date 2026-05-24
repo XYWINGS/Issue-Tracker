@@ -55,6 +55,14 @@ corepack pnpm dev
 - API: http://localhost:4000
 - Health check: http://localhost:4000/health
 
+For frontend-only work with hot reload:
+
+```bash
+corepack pnpm dev:web
+```
+
+Use `dev` while editing code. The `start` scripts run production builds and do not hot-reload source changes; after using `start`, code edits only appear after rebuilding and restarting.
+
 ## Environment Variables
 
 Backend, in `apps/api/.env`:
@@ -80,6 +88,9 @@ For deployment, set `MONGODB_URI` to MongoDB Atlas, use a strong `JWT_SECRET`, s
 ## Scripts
 
 ```bash
+corepack pnpm dev
+corepack pnpm dev:web
+corepack pnpm dev:api
 corepack pnpm build
 corepack pnpm lint
 corepack pnpm typecheck

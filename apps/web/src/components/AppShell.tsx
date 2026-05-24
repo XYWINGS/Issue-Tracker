@@ -1,25 +1,31 @@
 "use client";
 
-import LogoutIcon from "@mui/icons-material/Logout";
 import BugReportIcon from "@mui/icons-material/BugReport";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import LogoutIcon from "@mui/icons-material/Logout";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
+import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/navigation";
 import { api, useGetMeQuery, useLogoutMutation } from "@/lib/api";
+import { useColorMode } from "@/lib/colorMode";
 import { useAppDispatch } from "@/lib/hooks";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { data } = useGetMeQuery();
+  const { mode, toggleColorMode } = useColorMode();
   const [logout, { isLoading }] = useLogoutMutation();
+  const isDarkMode = mode === "dark";
 
   async function handleLogout() {
     await logout().unwrap();
@@ -44,6 +50,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <Typography variant="h6">Issue Tracker</Typography>
           </Stack>
           <Stack direction="row" spacing={1.5} alignItems="center">
+            <Tooltip title={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}>
+              <IconButton
+                aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+                color="inherit"
+                onClick={toggleColorMode}
+              >
+                {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
+              </IconButton>
+            </Tooltip>
             <Avatar sx={{ width: 34, height: 34, bgcolor: "secondary.main", fontSize: 14 }}>{initials}</Avatar>
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
               <Typography variant="body2" fontWeight={700}>

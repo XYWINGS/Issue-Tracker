@@ -22,3 +22,23 @@ export const env = {
 export const allowedOrigins = env.CLIENT_ORIGIN.split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
+
+function wildcardToRegExp(value: string) {
+  const escaped = value.replace(/[.+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`^${escaped.replace(/\*/g, ".*")}$`);
+}
+
+const allowedOriginPatterns = allowedOrigins
+  .filter((origin) => origin.includes("*"))
+  .map(wildcardToRegExp);
+
+const exactAllowedOrigins = allowedOrigins.filter((origin) => !origin.includes("*"));
+
+export function isOriginAllowed(origin?: string) {
+  if (!origin) return true;
+
+  return (
+    exactAllowedOrigins.includes(origin) ||
+    allowedOriginPatterns.some((pattern) => pattern.test(origin))
+  );
+}

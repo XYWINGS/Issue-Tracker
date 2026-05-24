@@ -150,5 +150,17 @@ All issue routes require authentication. All authenticated users can view all is
   - `JWT_SECRET`: long random secret
   - `CLIENT_ORIGIN`: deployed frontend URL, for example `https://your-frontend.vercel.app`
   - `COOKIE_SECURE`: `true`
+- `CLIENT_ORIGIN` supports comma-separated exact origins and `*` wildcards. For Vercel preview URLs, use a value like:
+
+```text
+CLIENT_ORIGIN=https://issue-tracker-*-xywingss-projects.vercel.app
+```
+
+For the currently deployed frontend, this exact value also works:
+
+```text
+CLIENT_ORIGIN=https://issue-tracker-gvvvv4szd-xywingss-projects.vercel.app
+```
+
 - Use the backend deployment URL plus `/api` as the frontend `NEXT_PUBLIC_API_URL`.
 - `backend/docker-compose.yml` is for local MongoDB only; production should use Atlas or the database service provided by your backend host.

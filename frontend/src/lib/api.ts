@@ -9,7 +9,7 @@ import type {
 } from "@/lib/domain";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api";
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 function issueQueryParams(query: IssueListQuery & { format?: "csv" | "json" }) {
   const params = new URLSearchParams();

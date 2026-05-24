@@ -142,8 +142,13 @@ All issue routes require authentication. All authenticated users can view all is
 
 - Deploy the frontend to Vercel with root directory set to `frontend`.
 - Set `NEXT_PUBLIC_API_URL` in Vercel to the deployed backend API URL ending in `/api`.
-- Deploy the backend from `backend` to Render, Railway, Fly.io, or a similar Node host.
+- Deploy the backend to Vercel with root directory set to `backend`.
+- The backend includes `backend/vercel.json` and `backend/api/index.js` so Express runs as a Vercel serverless function.
 - Use MongoDB Atlas for production data.
-- Configure backend CORS with `CLIENT_ORIGIN`.
-- Use HTTPS and `COOKIE_SECURE=true` for production cookies.
+- Configure backend environment variables in Vercel:
+  - `MONGODB_URI`: MongoDB Atlas connection string
+  - `JWT_SECRET`: long random secret
+  - `CLIENT_ORIGIN`: deployed frontend URL, for example `https://your-frontend.vercel.app`
+  - `COOKIE_SECURE`: `true`
+- Use the backend deployment URL plus `/api` as the frontend `NEXT_PUBLIC_API_URL`.
 - `backend/docker-compose.yml` is for local MongoDB only; production should use Atlas or the database service provided by your backend host.
